@@ -5,6 +5,7 @@ import {SafeAreaView, StyleSheet} from 'react-native';
 import CommunityApp from './src/Screen/CommunityApp';
 
 function App(): JSX.Element {
+  console.log('hum');
   return (
     <SafeAreaView style={styles.container}>
       <CommunityApp />
