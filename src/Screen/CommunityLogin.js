@@ -65,7 +65,7 @@ const CommunityLogin = props => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.detail}>
-        <Text style={styles.text}>Name</Text>
+        <Text style={styles.text}>Name*</Text>
         <TextInput
           placeholder="Enter Name"
           value={detail.name}
@@ -75,7 +75,7 @@ const CommunityLogin = props => {
           style={styles.textInput}
         />
 
-        <Text style={styles.text}>Phone No.</Text>
+        <Text style={styles.text}>Phone No.*</Text>
 
         <TextInput
           maxLength={10}
@@ -88,7 +88,7 @@ const CommunityLogin = props => {
           style={styles.textInput}
         />
 
-        <Text style={styles.text}>Address</Text>
+        <Text style={styles.text}>Address*</Text>
 
         <TextInput
           placeholder="Enter House number, sector"
@@ -100,7 +100,7 @@ const CommunityLogin = props => {
           multiline
         />
 
-        <Text style={styles.text}>Group ID</Text>
+        <Text style={styles.text}>Group ID*</Text>
 
         <TextInput
           maxLength={4}
@@ -115,7 +115,10 @@ const CommunityLogin = props => {
 
         <Pressable
           disabled={handler()}
-          style={styles.button}
+          style={[
+            styles.button,
+            {backgroundColor: handler() ? '#B6B6B6' : '#F80103'},
+          ]}
           onPress={() => onPressLogin()}>
           <Text style={styles.buttonText}>Join</Text>
         </Pressable>
