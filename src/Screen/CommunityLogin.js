@@ -1,4 +1,5 @@
 import {
+  Alert,
   Pressable,
   SafeAreaView,
   StyleSheet,
@@ -8,6 +9,7 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {useState} from 'react';
+import firestore from '@react-native-firebase/firestore';
 
 const CommunityLogin = props => {
   const [detail, setDetail] = useState({
@@ -15,6 +17,7 @@ const CommunityLogin = props => {
     phoneNo: '',
     address: '',
     groupID: '',
+    error: '',
   });
 
   const storeData = async detail => {
@@ -32,7 +35,7 @@ const CommunityLogin = props => {
     if (
       detail.phoneNo.length === 10 &&
       detail.name !== '' &&
-      detail.groupID !== '' &&
+      detail.groupID.length === 4 &&
       detail.address !== ''
     ) {
       return false;
@@ -43,11 +46,21 @@ const CommunityLogin = props => {
 
   const onPressLogin = () => {
     storeData(detail);
-    props.navigation.navigate('Button');
+    firestore()
+      .collection(detail.groupID)
+      .add({
+        name: detail.name.trim(),
+        groupID: detail.groupID.trim(),
+        address: detail.address.trim(),
+        phoneNo: detail.phoneNo.trim(),
+      })
+      .then(res => {
+        props.navigation.navigate('Button');
+      })
+      .catch(err => {
+        Alert.alert('Something went wrong', err);
+      });
   };
-
-  const handlerValue = handler();
-  console.log('handlerValue', handlerValue);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -90,6 +103,7 @@ const CommunityLogin = props => {
         <Text style={styles.text}>Group ID</Text>
 
         <TextInput
+          maxLength={4}
           keyboardType="number-pad"
           placeholder="Enter your group id shared by admin "
           value={detail.groupID}
