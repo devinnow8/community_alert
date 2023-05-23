@@ -7,7 +7,7 @@ import android.media.AudioAttributes;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-
+import org.devio.rn.splashscreen.SplashScreen;
 import androidx.core.app.NotificationCompat;
 
 import com.facebook.react.ReactActivity;
@@ -19,7 +19,7 @@ public class MainActivity extends ReactActivity {
 
     @Override
    protected void onCreate(Bundle savedInstanceState) {
-//       SplashScreen.show(this);  // here
+   
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         NotificationChannel notificationChannel = new NotificationChannel("sound_channel", "CommunityAlert", NotificationManager.IMPORTANCE_HIGH);
         notificationChannel.setShowBadge(true);
@@ -35,6 +35,7 @@ public class MainActivity extends ReactActivity {
         NotificationManager manager = getSystemService(NotificationManager.class);
         manager.createNotificationChannel(notificationChannel);
       }
+    SplashScreen.show(this);
        super.onCreate(savedInstanceState);
    }
   /**

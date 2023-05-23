@@ -5,9 +5,11 @@ import {SafeAreaView, StyleSheet, View} from 'react-native';
 import CommunityApp from './src/Screen/CommunityApp';
 
 import {RequestUserPermission} from './src/Helper/RequestUserPermission';
+import SplashScreen from 'react-native-splash-screen';
 
 const App = () => {
   useEffect(() => {
+    // SplashScreen.hide();
     RequestUserPermission();
   }, []);
 
