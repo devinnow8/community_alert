@@ -27,7 +27,6 @@ const CommunityApp = () => {
         setLoading(false);
       }
     } catch (e) {
-      console.log('error', e);
       return false;
     }
   };
@@ -47,9 +46,7 @@ const CommunityApp = () => {
               <Stack.Screen
                 name="Button"
                 component={AlertButton}
-                options={{
-                  headerShown: false,
-                }}
+                options={{gestureEnabled: false, headerShown: false}}
               />
             </Stack.Navigator>
           ) : (
@@ -57,7 +54,17 @@ const CommunityApp = () => {
               <Stack.Screen
                 name="Login"
                 component={CommunityLogin}
-                options={{headerTitle: 'Register'}}
+                options={{
+                  headerTitle: 'Register',
+                  headerTitleAlign: 'center',
+                  headerTitleStyle: {
+                    fontFamily: 'Poppins-Bold',
+                    fontSize: 25,
+                  },
+                  headerStyle: {
+                    backgroundColor: '#DBDBDB',
+                  },
+                }}
               />
               <Stack.Screen
                 name="Button"

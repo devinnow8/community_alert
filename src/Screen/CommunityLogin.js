@@ -1,23 +1,25 @@
 import {
-  Alert,
-  Pressable,
+  TouchableOpacity,
   SafeAreaView,
   StyleSheet,
   Text,
-  TextInput,
   View,
+  KeyboardAvoidingView,
+  Keyboard,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {useState} from 'react';
-import firestore from '@react-native-firebase/firestore';
+import axios from 'axios';
+import TextField from '../Components/TextField';
 
 const CommunityLogin = props => {
+  const [isFocused, setIsFocused] = React.useState(false);
   const [detail, setDetail] = useState({
     name: '',
     phoneNo: '',
     address: '',
-    groupID: '',
-    error: '',
+    groupId: '',
   });
 
   const storeData = async detail => {
@@ -35,7 +37,7 @@ const CommunityLogin = props => {
     if (
       detail.phoneNo.length === 10 &&
       detail.name !== '' &&
-      detail.groupID.length === 4 &&
+      detail.groupId.length === 4 &&
       detail.address !== ''
     ) {
       return false;
@@ -44,85 +46,104 @@ const CommunityLogin = props => {
     }
   };
 
-  const onPressLogin = () => {
+  const onPressLogin = async () => {
     storeData(detail);
-    firestore()
-      .collection(detail.groupID)
-      .add({
+    await axios
+      .post('http://13.233.123.182:4000/api/v1/auth/signup', {
         name: detail.name.trim(),
-        groupID: detail.groupID.trim(),
+        groupId: detail.groupId.trim(),
         address: detail.address.trim(),
         phoneNo: detail.phoneNo.trim(),
+        FCMToken: 123456789,
       })
       .then(res => {
+        console.log('Response ====>', res);
         props.navigation.navigate('Button');
       })
       .catch(err => {
-        Alert.alert('Something went wrong', err);
+        console.log('Something went wrong1', err);
       });
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.detail}>
-        <Text style={styles.text}>Name*</Text>
-        <TextInput
-          placeholder="Enter Name"
-          value={detail.name}
-          onChangeText={val => {
-            setDetail({...detail, name: val});
-          }}
-          style={styles.textInput}
-        />
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={styles.detail}>
+            <Text style={styles.text}>Name*</Text>
+            <TextField
+              placeholder="Enter Name"
+              placeholderTextColor="#BBBBBB"
+              value={detail.name}
+              onChangeText={val => {
+                setDetail({...detail, name: val});
+              }}
+            />
 
-        <Text style={styles.text}>Phone No.*</Text>
+            <Text style={styles.text}>Phone No.*</Text>
+            <TextField
+              maxLength={10}
+              keyboardType="number-pad"
+              placeholder="Enter Phone No."
+              placeholderTextColor="#BBBBBB"
+              value={detail.phoneNo}
+              onChangeText={val => {
+                let regex = /^[0-9]+$/;
+                if (regex.test(val) || val === '') {
+                  setDetail({...detail, phoneNo: val});
+                }
+              }}
+            />
 
-        <TextInput
-          maxLength={10}
-          keyboardType="number-pad"
-          placeholder="Enter Phone No."
-          value={detail.phoneNo}
-          onChangeText={val => {
-            setDetail({...detail, phoneNo: val});
-          }}
-          style={styles.textInput}
-        />
+            <Text style={styles.text}>Address*</Text>
+            <TextField
+              placeholder="Enter House number, sector"
+              placeholderTextColor="#BBBBBB"
+              placeholderStyle={styles.somePlaceholderStyle}
+              value={detail.address}
+              onChangeText={val => {
+                setDetail({...detail, address: val});
+              }}
+              fieldStyle={{
+                ...styles.addText,
+                paddingBottom: isFocused ? 40 : 40,
+                alignItems: 'center',
+              }}
+              multiline
+              onFocus={() => {
+                setIsFocused(true);
+              }}
+              onBlur={() => setIsFocused(false)}
+            />
 
-        <Text style={styles.text}>Address*</Text>
+            <Text style={styles.text}>Group ID*</Text>
+            <TextField
+              maxLength={4}
+              keyboardType="number-pad"
+              placeholder="Enter your group id shared by admin "
+              placeholderTextColor="#BBBBBB"
+              value={detail.groupId}
+              onChangeText={val => {
+                let regex = /^[0-9]+$/;
+                if (regex.test(val) || val === '') {
+                  setDetail({...detail, groupId: val});
+                }
+              }}
+            />
 
-        <TextInput
-          placeholder="Enter House number, sector"
-          value={detail.address}
-          onChangeText={val => {
-            setDetail({...detail, address: val});
-          }}
-          style={[styles.textInput, styles.addText]}
-          multiline
-        />
-
-        <Text style={styles.text}>Group ID*</Text>
-
-        <TextInput
-          maxLength={4}
-          keyboardType="number-pad"
-          placeholder="Enter your group id shared by admin "
-          value={detail.groupID}
-          onChangeText={val => {
-            setDetail({...detail, groupID: val});
-          }}
-          style={styles.textInput}
-        />
-
-        <Pressable
-          disabled={handler()}
-          style={[
-            styles.button,
-            {backgroundColor: handler() ? '#B6B6B6' : '#F80103'},
-          ]}
-          onPress={() => onPressLogin()}>
-          <Text style={styles.buttonText}>Join</Text>
-        </Pressable>
-      </View>
+            <TouchableOpacity
+              disabled={handler()}
+              style={[
+                styles.button,
+                {backgroundColor: handler() ? '#B6B6B6' : '#F80103'},
+              ]}
+              onPress={() => onPressLogin()}>
+              <Text style={styles.buttonText}>Join</Text>
+            </TouchableOpacity>
+          </View>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
@@ -133,11 +154,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
+    backgroundColor: 'white',
   },
   detail: {
     flex: 1,
-    marginLeft: 34,
-    marginRight: 34,
+    // marginLeft: 34,
+    // marginRight: 34,
     marginTop: 24,
   },
   text: {
@@ -149,7 +171,7 @@ const styles = StyleSheet.create({
   },
 
   textInput: {
-    width: 307,
+    width: 330,
     height: 40,
     borderWidth: 1,
     paddingLeft: 11,
@@ -158,7 +180,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     paddingTop: 9,
     paddingBottom: 9,
-    fontSize: 16,
+    fontSize: 15,
     lineHeight: 20,
   },
 
@@ -179,5 +201,10 @@ const styles = StyleSheet.create({
   },
   addText: {
     height: 77,
+    // paddingBottom: 40,
+  },
+  somePlaceholderStyle: {
+    color: 'red',
+    fontSize: 30,
   },
 });

@@ -1,0 +1,21 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "src/assets/fonts/Jaldi-Bold.ttf",
+      "sha1": "2d92d31103ab54bf3a1e0c2cd35d7c42f1f69e6d"
+    },
+    {
+      "path": "src/assets/fonts/Jaldi-Regular.ttf",
+      "sha1": "48775240d578ff4830072ef359d6fa95d26d52c3"
+    },
+    {
+      "path": "src/assets/fonts/Poppins-Bold.ttf",
+      "sha1": "3bc8164396c3e6c1e4fae0cf2a51ea66381c1c2d"
+    },
+    {
+      "path": "src/assets/fonts/Poppins-Medium.ttf",
+      "sha1": "cf83e7582e60ed83f67c7d68b4f7482ac9fc6958"
+    }
+  ]
+}
