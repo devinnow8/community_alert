@@ -4,17 +4,16 @@ import {
   StyleSheet,
   Text,
   View,
-  KeyboardAvoidingView,
   Keyboard,
   TouchableWithoutFeedback,
 } from 'react-native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {useState} from 'react';
 import axios from 'axios';
 import TextField from '../Components/TextField';
 
 const CommunityLogin = props => {
-  const [isFocused, setIsFocused] = React.useState(false);
   const [detail, setDetail] = useState({
     name: '',
     phoneNo: '',
@@ -67,8 +66,7 @@ const CommunityLogin = props => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      <KeyboardAwareScrollView>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={styles.detail}>
             <Text style={styles.text}>Name*</Text>
@@ -107,14 +105,9 @@ const CommunityLogin = props => {
               }}
               fieldStyle={{
                 ...styles.addText,
-                paddingBottom: isFocused ? 40 : 40,
                 alignItems: 'center',
               }}
               multiline
-              onFocus={() => {
-                setIsFocused(true);
-              }}
-              onBlur={() => setIsFocused(false)}
             />
 
             <Text style={styles.text}>Group ID*</Text>
@@ -143,7 +136,7 @@ const CommunityLogin = props => {
             </TouchableOpacity>
           </View>
         </TouchableWithoutFeedback>
-      </KeyboardAvoidingView>
+      </KeyboardAwareScrollView>
     </SafeAreaView>
   );
 };
