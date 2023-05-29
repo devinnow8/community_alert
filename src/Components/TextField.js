@@ -1,11 +1,5 @@
-import {StyleSheet, Text, View, TextInput, Image} from 'react-native';
+import {StyleSheet, Text, View, TextInput} from 'react-native';
 import React from 'react';
-import {
-  scale,
-  verticalScale,
-  moderateScale,
-  moderateVerticalScale,
-} from 'react-native-size-matters';
 
 const TextField = ({error, onFocus = () => {}, ...props}) => {
   const [isFocused, setIsFocused] = React.useState(false);
@@ -46,7 +40,6 @@ export default TextField;
 const styles = StyleSheet.create({
   textFieldStyle: {
     width: 330,
-    height: 40,
     borderWidth: 1,
     paddingLeft: 11,
     borderColor: '#BCBCBC',

@@ -66,7 +66,7 @@ const CommunityLogin = props => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <KeyboardAwareScrollView>
+      <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={styles.detail}>
             <Text style={styles.text}>Name*</Text>
@@ -151,8 +151,6 @@ const styles = StyleSheet.create({
   },
   detail: {
     flex: 1,
-    // marginLeft: 34,
-    // marginRight: 34,
     marginTop: 24,
   },
   text: {
@@ -194,7 +192,6 @@ const styles = StyleSheet.create({
   },
   addText: {
     height: 77,
-    // paddingBottom: 40,
   },
   somePlaceholderStyle: {
     color: 'red',
