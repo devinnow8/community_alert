@@ -35,7 +35,7 @@ const CommunityLogin = props => {
   const handler = () => {
     if (
       detail.phoneNo.length === 10 &&
-      detail.name !== '' &&
+      detail.name.trim() !== '' &&
       detail.groupId.length === 4 &&
       detail.address !== ''
     ) {
