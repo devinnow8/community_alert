@@ -1,4 +1,4 @@
-import {ActivityIndicator, SafeAreaView, StyleSheet, View} from 'react-native';
+import {ActivityIndicator, SafeAreaView, StyleSheet, View,} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -22,6 +22,7 @@ const CommunityApp = () => {
 
       if (userDetails && Object.keys(userDetails).length > 0) {
         setIsUserAlreadyLoggedIn(true);
+
         setLoading(false);
       } else {
         setLoading(false);
@@ -69,7 +70,7 @@ const CommunityApp = () => {
               <Stack.Screen
                 name="Button"
                 component={AlertButton}
-                options={{
+                options={{gestureEnabled: false,
                   headerShown: false,
                 }}
               />

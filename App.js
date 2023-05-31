@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 
-import {SafeAreaView, StyleSheet, View} from 'react-native';
+import {SafeAreaView, StyleSheet, View, Platform} from 'react-native';
 
 import CommunityApp from './src/Screen/CommunityApp';
 
@@ -13,8 +13,8 @@ import SplashScreen from 'react-native-splash-screen';
 const App = () => {
   useEffect(() => {
     SplashScreen.hide();
-    RequestUserPermission();
-    requestNotificationPermission();
+   Platform.OS==="ios"? RequestUserPermission(): requestNotificationPermission();
+  
   }, []);
 
   return (

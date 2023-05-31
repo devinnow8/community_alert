@@ -69,61 +69,69 @@ const CommunityLogin = props => {
       <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={styles.detail}>
-            <Text style={styles.text}>Name*</Text>
-            <TextField
-              placeholder="Enter Name"
-              placeholderTextColor="#BBBBBB"
-              value={detail.name}
-              onChangeText={val => {
-                setDetail({...detail, name: val});
-              }}
-            />
+            <>
+              <Text style={styles.text}>Name*</Text>
 
-            <Text style={styles.text}>Phone No.*</Text>
-            <TextField
-              maxLength={10}
-              keyboardType="number-pad"
-              placeholder="Enter Phone No."
-              placeholderTextColor="#BBBBBB"
-              value={detail.phoneNo}
-              onChangeText={val => {
-                let regex = /^[0-9]+$/;
-                if (regex.test(val) || val === '') {
-                  setDetail({...detail, phoneNo: val});
-                }
-              }}
-            />
+              <TextField
+                placeholder="Enter Name"
+                placeholderTextColor="#BBBBBB"
+                value={detail.name}
+                onChangeText={val => {
+                  setDetail({...detail, name: val});
+                }}
+              />
+            </>
 
-            <Text style={styles.text}>Address*</Text>
-            <TextField
-              placeholder="Enter House number, sector"
-              placeholderTextColor="#BBBBBB"
-              placeholderStyle={styles.somePlaceholderStyle}
-              value={detail.address}
-              onChangeText={val => {
-                setDetail({...detail, address: val});
-              }}
-              fieldStyle={{
-                ...styles.addText,
-                alignItems: 'center',
-              }}
-              multiline
-            />
+            <>
+              <Text style={styles.text}>Phone No.*</Text>
+              <TextField
+                maxLength={10}
+                keyboardType="number-pad"
+                placeholder="Enter Phone No."
+                placeholderTextColor="#BBBBBB"
+                value={detail.phoneNo}
+                onChangeText={val => {
+                  let regex = /^[0-9]+$/;
+                  if (regex.test(val) || val === '') {
+                    setDetail({...detail, phoneNo: val});
+                  }
+                }}
+              />
+            </>
 
-            <Text style={styles.text}>Group ID*</Text>
-            <TextField
-              maxLength={4}
-              keyboardType="number-pad"
-              placeholder="Enter your group id shared by admin "
-              placeholderTextColor="#BBBBBB"
-              value={detail.groupId}
-              onChangeText={val => {
-                let regex = /^[0-9]+$/;
-                if (regex.test(val) || val === '') {
-                  setDetail({...detail, groupId: val});
-                }
-              }}
-            />
+            <>
+              <Text style={styles.text}>Address*</Text>
+              <TextField
+                placeholder="Enter House number, sector"
+                placeholderTextColor="#BBBBBB"
+                value={detail.address}
+                onChangeText={val => {
+                  setDetail({...detail, address: val});
+                }}
+                fieldStyle={{
+                  ...styles.addText,
+                  // alignItems: 'center',
+                }}
+                multiline
+              />
+            </>
+
+            <>
+              <Text style={styles.text}>Group ID*</Text>
+              <TextField
+                maxLength={4}
+                keyboardType="number-pad"
+                placeholder="Enter your group id shared by admin "
+                placeholderTextColor="#BBBBBB"
+                value={detail.groupId}
+                onChangeText={val => {
+                  let regex = /^[0-9]+$/;
+                  if (regex.test(val) || val === '') {
+                    setDetail({...detail, groupId: val});
+                  }
+                }}
+              />
+            </>
 
             <TouchableOpacity
               disabled={handler()}
@@ -146,12 +154,12 @@ export default CommunityLogin;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
     backgroundColor: 'white',
   },
   detail: {
     flex: 1,
     marginTop: 24,
+    marginHorizontal: 15,
   },
   text: {
     height: 22,
@@ -159,6 +167,7 @@ const styles = StyleSheet.create({
     fontWeight: 400,
     color: '#FE0003',
     marginBottom: 4,
+    
   },
 
   textInput: {
@@ -192,9 +201,5 @@ const styles = StyleSheet.create({
   },
   addText: {
     height: 77,
-  },
-  somePlaceholderStyle: {
-    color: 'red',
-    fontSize: 30,
   },
 });

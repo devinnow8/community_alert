@@ -29,6 +29,7 @@ const AlertButton = () => {
 
     const backAction = () => {
       BackHandler.exitApp();
+      return true
     };
 
     const backHandler = BackHandler.addEventListener(
@@ -76,6 +77,7 @@ const AlertButton = () => {
     const ID = userDetails['groupId'];
     const Name = userDetails['name'];
     const Address = userDetails['address'];
+    unSubscribeTopic(ID)
     await axios
       .post('http://13.233.123.182:4000/api/v1/alert/all', {
         groupId: ID,
@@ -84,6 +86,7 @@ const AlertButton = () => {
       })
       .then(res => {
         console.log('Response ====>', res);
+        subscribeTopic(ID);
       })
       .catch(err => {
         console.log('Something went wrong2', err);
@@ -106,6 +109,12 @@ const AlertButton = () => {
       .then(() => console.log('Subscribed to topic!', ID));
     setIsLoading(false);
   };
+
+  const unSubscribeTopic = async ID => {
+    messaging()
+  .unsubscribeFromTopic(ID)
+  .then(() => console.log('Unsubscribed fom the topic!', ID));
+  }
 
   return (
     <SafeAreaView style={styles.container}>
