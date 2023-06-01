@@ -13,8 +13,9 @@ import SplashScreen from 'react-native-splash-screen';
 const App = () => {
   useEffect(() => {
     SplashScreen.hide();
-   Platform.OS==="ios"? RequestUserPermission(): requestNotificationPermission();
-  
+    Platform.OS === 'ios'
+      ? RequestUserPermission()
+      : requestNotificationPermission();
   }, []);
 
   return (

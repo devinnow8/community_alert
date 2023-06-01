@@ -6,14 +6,19 @@ import {
   View,
   Keyboard,
   TouchableWithoutFeedback,
+  ActivityIndicator,
 } from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, {useState} from 'react';
+import React, {useContext, useRef, useState} from 'react';
 import axios from 'axios';
 import TextField from '../Components/TextField';
+import {UserContext} from './CommunityApp';
 
 const CommunityLogin = props => {
+  const {userDetails, setUserDetails} = useContext(UserContext);
+
+  const [isLoading, setIsLoading] = useState(false);
   const [detail, setDetail] = useState({
     name: '',
     phoneNo: '',
@@ -46,7 +51,9 @@ const CommunityLogin = props => {
   };
 
   const onPressLogin = async () => {
+    setIsLoading(true);
     storeData(detail);
+
     await axios
       .post('http://13.233.123.182:4000/api/v1/auth/signup', {
         name: detail.name.trim(),
@@ -56,95 +63,122 @@ const CommunityLogin = props => {
         FCMToken: 123456789,
       })
       .then(res => {
+        setUserDetails(detail);
+        setIsLoading(false);
         console.log('Response ====>', res);
-        props.navigation.navigate('Button');
       })
       .catch(err => {
         console.log('Something went wrong1', err);
       });
   };
 
+  const phoneNoRef = useRef();
+  const addressRef = useRef();
+  const grouprRef = useRef();
+
   return (
     <SafeAreaView style={styles.container}>
-      <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View style={styles.detail}>
-            <>
-              <Text style={styles.text}>Name*</Text>
+      {isLoading ? (
+        <ActivityIndicator size="large" />
+      ) : (
+        <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <View style={styles.detail}>
+              <>
+                <Text style={styles.text}>Name*</Text>
 
-              <TextField
-                placeholder="Enter Name"
-                placeholderTextColor="#BBBBBB"
-                value={detail.name}
-                onChangeText={val => {
-                  setDetail({...detail, name: val});
-                }}
-              />
-            </>
+                <TextField
+                  placeholder="Enter Name"
+                  placeholderTextColor="#BBBBBB"
+                  value={detail.name}
+                  onChangeText={val => {
+                    setDetail({...detail, name: val});
+                  }}
+                  returnKeyType="next"
+                  onSubmitEditing={() => {
+                    console.log(phoneNoRef, '---->');
+                    phoneNoRef?.current?.focus();
+                  }}
+                />
+              </>
 
-            <>
-              <Text style={styles.text}>Phone No.*</Text>
-              <TextField
-                maxLength={10}
-                keyboardType="number-pad"
-                placeholder="Enter Phone No."
-                placeholderTextColor="#BBBBBB"
-                value={detail.phoneNo}
-                onChangeText={val => {
-                  let regex = /^[0-9]+$/;
-                  if (regex.test(val) || val === '') {
-                    setDetail({...detail, phoneNo: val});
-                  }
-                }}
-              />
-            </>
+              <>
+                <Text style={styles.text}>Phone No.*</Text>
+                <TextField
+                  maxLength={10}
+                  keyboardType="number-pad"
+                  placeholder="Enter Phone No."
+                  placeholderTextColor="#BBBBBB"
+                  value={detail.phoneNo}
+                  onChangeText={val => {
+                    let regex = /^[0-9]+$/;
+                    if (regex.test(val) || val === '') {
+                      setDetail({...detail, phoneNo: val});
+                    }
+                  }}
+                  returnKeyType="next"
+                  ref={phoneNoRef}
+                  onSubmitEditing={() => {
+                    console.log(phoneNoRef, '---->');
+                    addressRef?.current?.focus();
+                  }}
+                />
+              </>
 
-            <>
-              <Text style={styles.text}>Address*</Text>
-              <TextField
-                placeholder="Enter House number, sector"
-                placeholderTextColor="#BBBBBB"
-                value={detail.address}
-                onChangeText={val => {
-                  setDetail({...detail, address: val});
-                }}
-                fieldStyle={{
-                  ...styles.addText,
-                  // alignItems: 'center',
-                }}
-                multiline
-              />
-            </>
+              <>
+                <Text style={styles.text}>Address*</Text>
+                <TextField
+                  placeholder="Enter House number, sector"
+                  placeholderTextColor="#BBBBBB"
+                  value={detail.address}
+                  onChangeText={val => {
+                    setDetail({...detail, address: val});
+                  }}
+                  fieldStyle={{
+                    ...styles.addText,
+                    // alignItems: 'center',
+                  }}
+                  // multiline
+                  returnKeyType="next"
+                  ref={addressRef}
+                  onSubmitEditing={() => {
+                    console.log(phoneNoRef, '---->');
+                    grouprRef?.current?.focus();
+                  }}
+                />
+              </>
 
-            <>
-              <Text style={styles.text}>Group ID*</Text>
-              <TextField
-                maxLength={4}
-                keyboardType="number-pad"
-                placeholder="Enter your group id shared by admin "
-                placeholderTextColor="#BBBBBB"
-                value={detail.groupId}
-                onChangeText={val => {
-                  let regex = /^[0-9]+$/;
-                  if (regex.test(val) || val === '') {
-                    setDetail({...detail, groupId: val});
-                  }
-                }}
-              />
-            </>
+              <>
+                <Text style={styles.text}>Group ID*</Text>
+                <TextField
+                  maxLength={4}
+                  keyboardType="number-pad"
+                  placeholder="Enter your group id shared by admin "
+                  placeholderTextColor="#BBBBBB"
+                  value={detail.groupId}
+                  onChangeText={val => {
+                    let regex = /^[0-9]+$/;
+                    if (regex.test(val) || val === '') {
+                      setDetail({...detail, groupId: val});
+                    }
+                  }}
+                  ref={grouprRef}
+                />
+              </>
 
-            <TouchableOpacity
-              disabled={handler()}
-              style={[
-                styles.button,
-                {backgroundColor: handler() ? '#B6B6B6' : '#F80103'},
-              ]}
-              onPress={() => onPressLogin()}>
-              <Text style={styles.buttonText}>Join</Text>
-            </TouchableOpacity>
-          </View>
-        </TouchableWithoutFeedback>
-      </KeyboardAwareScrollView>
+              <TouchableOpacity
+                disabled={handler()}
+                style={[
+                  styles.button,
+                  {backgroundColor: handler() ? '#B6B6B6' : '#F80103'},
+                ]}
+                onPress={() => onPressLogin()}>
+                <Text style={styles.buttonText}>Join</Text>
+              </TouchableOpacity>
+            </View>
+          </TouchableWithoutFeedback>
+        </KeyboardAwareScrollView>
+      )}
     </SafeAreaView>
   );
 };
@@ -167,7 +201,6 @@ const styles = StyleSheet.create({
     fontWeight: 400,
     color: '#FE0003',
     marginBottom: 4,
-    
   },
 
   textInput: {
