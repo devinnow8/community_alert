@@ -105,11 +105,15 @@ const AlertButton = props => {
     const ID = userDetails['groupId'];
     const Name = userDetails['name'];
     const Address = userDetails['address'];
+    const PhoneNo = userDetails['phoneNo'];
+    const UserID = userDetails['userId']; //_id
     unSubscribeTopic(ID);
     await axios
       .post('http://13.233.123.182:4000/api/v1/alert/all', {
         groupId: ID,
         name: Name,
+        phoneNo: PhoneNo,
+        userId: UserID,
         address: Address,
       })
       .then(res => {
@@ -136,7 +140,7 @@ const AlertButton = props => {
               <Image
                 source={profileIcon}
                 style={{
-                  height: 60,
+                  height: 40,
                   width: 60,
                   alignSelf: 'flex-end',
                   marginRight: 15,

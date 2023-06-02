@@ -1,4 +1,10 @@
-import {ActivityIndicator, SafeAreaView, StyleSheet, View} from 'react-native';
+import {
+  ActivityIndicator,
+  Image,
+  SafeAreaView,
+  StyleSheet,
+  View,
+} from 'react-native';
 import React, {createContext, useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -6,7 +12,7 @@ import CommunityLogin from './CommunityLogin';
 import AlertButton from './AlertButton';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import UserProfile from './UserProfile';
-// import {useContext} from 'react';
+import AlertHistory from './AlertHistory';
 
 const Stack = createNativeStackNavigator();
 
@@ -15,7 +21,7 @@ export const UserContext = createContext({});
 const CommunityApp = () => {
   const [userDetails, setUserDetails] = useState({});
   const [isLoading, setLoading] = useState(true);
-  // const [isUserAlreadyLoggedIn, setIsUserAlreadyLoggedIn] = useState(false);
+
   useEffect(() => {
     loggedIn();
   }, []);
@@ -38,6 +44,10 @@ const CommunityApp = () => {
       return false;
     }
   };
+  // useEffect(() => {
+  //   console.log('userDetails', userDetails);
+  // }, [userDetails]);
+
   return (
     <UserContext.Provider
       value={{userDetails: userDetails, setUserDetails: setUserDetails}}>
@@ -55,7 +65,18 @@ const CommunityApp = () => {
                   component={AlertButton}
                   options={{gestureEnabled: false, headerShown: false}}
                 />
-                <Stack.Screen name="Profile" component={UserProfile} />
+                <Stack.Screen
+                  name="Profile"
+                  component={UserProfile}
+                  options={{
+                    headerShown: false,
+                  }}
+                />
+                <Stack.Screen
+                  name="History"
+                  component={AlertHistory}
+                  options={{headerShown: false}}
+                />
               </Stack.Navigator>
             ) : (
               <Stack.Navigator>
