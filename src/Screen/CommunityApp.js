@@ -13,10 +13,27 @@ import AlertButton from './AlertButton';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import UserProfile from './UserProfile';
 import AlertHistory from './AlertHistory';
+import {createDrawerNavigator} from '@react-navigation/drawer';
 
 const Stack = createNativeStackNavigator();
+const Drawer = createDrawerNavigator();
 
 export const UserContext = createContext({});
+
+function Root() {
+  return (
+    <Drawer.Navigator
+      useLegacyImplementation
+      drawerContent={props => <UserProfile {...props} />}>
+      {/* <Drawer.Screen name="Profile" component={UserProfile} /> */}
+      <Drawer.Screen
+        name="Button"
+        component={AlertButton}
+        options={{gestureEnabled: false, headerShown: false}}
+      />
+    </Drawer.Navigator>
+  );
+}
 
 const CommunityApp = () => {
   const [userDetails, setUserDetails] = useState({});
@@ -44,9 +61,6 @@ const CommunityApp = () => {
       return false;
     }
   };
-  // useEffect(() => {
-  //   console.log('userDetails', userDetails);
-  // }, [userDetails]);
 
   return (
     <UserContext.Provider
@@ -61,17 +75,19 @@ const CommunityApp = () => {
             {userDetails && Object.keys(userDetails).length > 0 ? (
               <Stack.Navigator>
                 <Stack.Screen
-                  name="Button"
-                  component={AlertButton}
+                  name="Root"
+                  component={Root}
+                  // name="Button"
+                  // component={AlertButton}
                   options={{gestureEnabled: false, headerShown: false}}
                 />
-                <Stack.Screen
+                {/* <Stack.Screen
                   name="Profile"
                   component={UserProfile}
                   options={{
                     headerShown: false,
                   }}
-                />
+                /> */}
                 <Stack.Screen
                   name="History"
                   component={AlertHistory}

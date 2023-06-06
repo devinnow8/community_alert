@@ -19,6 +19,7 @@ const AlertHistory = props => {
   const Left = () => (
     <View style={styles.headerView}>
       <TouchableOpacity
+        hitSlop={20}
         style={styles.touchable}
         onPress={() => props.navigation.goBack()}>
         <Image style={styles.backIcon} source={backIcon} resizeMode="contain" />
@@ -26,11 +27,11 @@ const AlertHistory = props => {
       <View style={styles.headerTextView}>
         <Text style={styles.headerText}>History</Text>
       </View>
+      <View style={styles.touchable} />
     </View>
   );
 
   const RenderItem = items => {
-    console.log(items, 'itemsitemsitems');
     return (
       <View style={styles.outerView}>
         <View style={styles.nameContainer}>
@@ -42,16 +43,16 @@ const AlertHistory = props => {
           <View style={styles.nameDateView}>
             <Text style={styles.nameText}>{items?.item.name}</Text>
             <Text style={styles.date}>
-              {moment(`${items.item.createdAt}`).format('MMM-Do-YY')}
+              {moment(`${items.item.createdAt}`).format('DD MMM YY hh:mm A')}
             </Text>
           </View>
           <View>
             <Text style={styles.msgText}>{items?.item.notificationMsg}</Text>
-            <View style={{alignSelf: 'flex-end'}}>
+            {/* <View style={{alignSelf: 'flex-end'}}>
               <Text style={{color: '#000'}}>
                 {moment(`${items.item.createdAt}`).format('hh :mm A')}
               </Text>
-            </View>
+            </View> */}
           </View>
         </View>
       </View>
@@ -73,6 +74,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
   },
+  touchable: {},
   outerView: {
     flexDirection: 'row',
     marginHorizontal: 20,
@@ -91,12 +93,22 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignSelf: 'center',
   },
+  nameContainer: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: '#000',
+    justifyContent: 'center',
+    alignSelf: 'center',
+  },
   nameContainerText: {
     textAlign: 'center',
     fontSize: 20,
     fontWeight: 'bold',
     color: '#000',
   },
+
   textView: {marginLeft: 10, width: '80%'},
   nameDateView: {
     flexDirection: 'row',
@@ -110,16 +122,17 @@ const styles = StyleSheet.create({
   },
   headerView: {
     flexDirection: 'row',
-    marginTop: 10,
-    alignItems: 'center',
-    alignContent: 'center',
+    paddingTop: 19,
+    paddingHorizontal: 20,
+    justifyContent: 'space-between',
+    // paddingLeft: 34,
   },
-  touchable: {alignSelf: 'flex-start'},
-  backIcon: {height: 30},
+
+  backIcon: {height: 20, width: 10},
   headerTextView: {
-    alignSelf: 'center',
-    alignItems: 'center',
-    marginLeft: width / 4.2,
+    // alignSelf: 'center',
+    // alignItems: 'center',
+    // marginLeft: width / 4.2,
   },
   headerText: {
     fontSize: 20,

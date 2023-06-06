@@ -18,7 +18,6 @@ import {UserContext} from './CommunityApp';
 const CommunityLogin = props => {
   const {userDetails, setUserDetails} = useContext(UserContext);
   const [isLogin, setIsLogin] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
   const [detail, setDetail] = useState({
     name: '',
@@ -53,7 +52,6 @@ const CommunityLogin = props => {
 
   const onPressLogin = async () => {
     setIsLogin(true);
-    // setIsLoading(true);
 
     await axios
       .post('http://13.233.123.182:4000/api/v1/auth/signup', {
@@ -64,12 +62,13 @@ const CommunityLogin = props => {
       })
       .then(response => response.data)
       .then(res => {
+        console.log('Response ====>12232', res);
         if (res && res.data && res.success && res.data.new_user) {
           const userId = res.data.new_user?._id;
           setUserDetails({...detail, userId});
           storeData({...detail, userId});
         }
-        // setIsLoading(false);
+
         setIsLogin(false);
         console.log('Response ====>', res);
       })

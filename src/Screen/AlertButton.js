@@ -7,12 +7,14 @@ import {
   ActivityIndicator,
   View,
   BackHandler,
+  Platform,
 } from 'react-native';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import PushNotification from 'react-native-push-notification';
 import React, {useContext, useEffect, useState} from 'react';
 const alertImage = require('../assets/Image/Alert_Button.png');
-const profileIcon = require('../assets/Image/profile_icon.png');
+const menuBar = require('../assets/Image/menuBar.png');
+const notificationIcon = require('../assets/Image/notification_icon.png');
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
 import axios from 'axios';
@@ -24,11 +26,11 @@ const AlertButton = props => {
 
   useEffect(() => {
     setIsLoading(false);
-
+    console.log('hellloooUse1111111');
     userDetail();
-
+    console.log('hellloooo222222222');
     configurePushNotifications();
-
+    console.log('helloooo3333333');
     const backAction = () => {
       BackHandler.exitApp();
       return true;
@@ -38,6 +40,7 @@ const AlertButton = props => {
       'hardwareBackPress',
       backAction,
     );
+    console.log('hellloooooo4444');
 
     return () => backHandler.remove();
   }, []);
@@ -80,8 +83,8 @@ const AlertButton = props => {
     // setUsersDetails(userDetails);
     if (userDetails && Object.keys(userDetails).length > 0) {
       const ID = userDetails['groupId'];
-      console.log('ID', ID.toString());
-      subscribeTopic(ID);
+      console.log('ID-------->', ID.toString());
+      await subscribeTopic(ID);
     }
   };
   const subscribeTopic = async ID => {
@@ -91,6 +94,7 @@ const AlertButton = props => {
       .then(() => console.log('Subscribed to topic!', ID))
       .catch(err => console.log(err));
     setIsLoading(false);
+    console.log('helllooosubbbbb');
   };
 
   const unSubscribeTopic = async ID => {
@@ -125,32 +129,66 @@ const AlertButton = props => {
       });
   };
 
-  const profileHandler = () => {
-    props.navigation.navigate('Profile');
+  const alertHistory = () => {
+    console.log('hgjyhghgkjhkjhkljlkjlkj', userDetails);
+
+    axios
+      .post('http://13.233.123.182:4000/api/v1/alert/fetchAllAlerts', {
+        userId: userDetails.userId,
+      })
+      .then(res => {
+        console.log(res.data.data);
+        props.navigation.navigate('History', {alertHistory: res.data.data});
+      });
+  };
+
+  const handler = () => {
+    props.navigation.openDrawer();
   };
 
   return (
     <SafeAreaView style={styles.container}>
       {isLoading ? (
-        <ActivityIndicator size="large" alignSelf="center" />
+        <>
+          <ActivityIndicator size="large" alignSelf="center" />
+          {console.log('Helllllooooooooooooo1')}
+        </>
       ) : (
         <View>
-          <View>
-            <TouchableOpacity onPress={() => profileHandler()}>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            {console.log('Helllllooooooooooooo222222222')}
+            <TouchableOpacity onPress={() => handler()}>
+              {/* profileHandler */}
               <Image
-                source={profileIcon}
+                source={menuBar}
                 style={{
-                  height: 40,
-                  width: 60,
-                  alignSelf: 'flex-end',
-                  marginRight: 15,
-                  marginTop: 15,
+                  height: 17.24,
+                  width: 23,
+
+                  marginTop: 22,
+                  marginLeft: 32,
                 }}
-                resizeMode="contain"
+              />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              // style={{
+              //   backgroundColor: 'red',
+              // }}
+              onPress={alertHistory}>
+              <Image
+                source={notificationIcon}
+                style={{
+                  height: 23,
+                  width: 21,
+                  // alignSelf: 'flex-end',
+                  marginTop: 22,
+                  // marginLeft: 32,
+                  marginRight: 32,
+                }}
               />
             </TouchableOpacity>
           </View>
-
           <View style={styles.body}>
             <View style={styles.viewButton}>
               <TouchableOpacity
