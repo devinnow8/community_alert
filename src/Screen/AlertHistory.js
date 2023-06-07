@@ -115,11 +115,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginBottom: 5,
   },
-  nameText: {fontSize: 18, color: '#000'},
-  msgText: {fontSize: 15, color: '#000'},
+  nameText: {fontSize: 18, color: '#000', width: '50%'},
   date: {
     color: '#000',
+    width: '50%',
   },
+  msgText: {fontSize: 15, color: '#000'},
+
   headerView: {
     flexDirection: 'row',
     paddingTop: 19,

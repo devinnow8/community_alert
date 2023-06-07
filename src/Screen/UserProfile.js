@@ -75,7 +75,7 @@ const UserProfile = props => {
               {usersDetails.name.charAt(0)}
             </Text>
           </View>
-          <View style={{margin: 16, width: '40%'}}>
+          <View style={{margin: 16, width: '60%'}}>
             <Text
               style={{
                 fontSize: 18,
@@ -84,7 +84,7 @@ const UserProfile = props => {
                 fontFamily: 'Poppins',
                 fontWeight: 700,
               }}>
-              {usersDetails.name}{' '}
+              {usersDetails.name}
             </Text>
             <Text
               style={{
