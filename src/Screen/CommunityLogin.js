@@ -7,6 +7,7 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -74,6 +75,9 @@ const CommunityLogin = props => {
       })
       .catch(err => {
         setIsLogin(false);
+        if (err.message.includes('403')) {
+          Alert.alert('Attention', 'Group Id does not exist');
+        }
         console.log('Something went wrong1', err);
       });
   };
